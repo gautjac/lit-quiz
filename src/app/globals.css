@@ -1,0 +1,182 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-vellum: #f6f1e8;
+  --color-vellum-dark: #ebe2d2;
+  --color-ink: #1f1a14;
+  --color-ink-light: #443c30;
+  --color-ink-muted: #857a68;
+  --color-rubric: #8c2f24;
+  --color-rubric-light: #f3e1de;
+  --color-rubric-dark: #6a221a;
+  --color-correct: #2f6b3e;
+  --color-correct-light: #e3efe2;
+  --color-wrong: #b13b29;
+  --color-wrong-light: #fae3df;
+  --color-spine: #2c241b;
+  --color-spine-accent: #4a3d2d;
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--color-vellum);
+  color: var(--color-ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* Serif headings — the typographic equivalent of an old book's title page. */
+h1, h2, h3 {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  letter-spacing: -0.01em;
+}
+
+/* The passage card — looks like a single page from a hand-bound book. */
+.passage-card {
+  background: #fffbf3;
+  border: 1px solid var(--color-vellum-dark);
+  border-radius: 2px;
+  padding: 1.75rem 2rem;
+  position: relative;
+  font-family: 'Georgia', 'Iowan Old Style', 'Times New Roman', serif;
+  font-size: 1.075rem;
+  line-height: 1.7;
+  color: var(--color-ink);
+  box-shadow:
+    0 1px 0 var(--color-vellum-dark),
+    0 2px 4px rgba(31, 26, 20, 0.08),
+    0 6px 24px rgba(31, 26, 20, 0.06);
+  white-space: pre-wrap;
+}
+
+.passage-card::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(140, 47, 36, 0.12);
+  border-radius: 1px;
+  pointer-events: none;
+}
+
+.passage-card.poetry {
+  font-family: 'Iowan Old Style', 'Georgia', 'Times New Roman', serif;
+  text-align: center;
+  white-space: pre-wrap;
+  padding: 2rem;
+}
+
+.passage-card .drop-cap::first-letter {
+  font-size: 3.4rem;
+  font-weight: 600;
+  float: left;
+  line-height: 0.9;
+  margin: 0.3rem 0.5rem 0 -0.1rem;
+  color: var(--color-rubric);
+  font-family: 'Georgia', serif;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.85); opacity: 0.6; }
+  50% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.85); opacity: 0.6; }
+}
+
+.animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
+.animate-fade-in-scale { animation: fadeInScale 0.4s ease-out forwards; }
+.animate-slide-up { animation: slideUp 0.6s ease-out forwards; }
+
+.shimmer {
+  background: linear-gradient(90deg, var(--color-vellum-dark) 25%, var(--color-vellum) 50%, var(--color-vellum-dark) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Plain library card. */
+.library-card {
+  background: #fffbf3;
+  border: 1px solid var(--color-vellum-dark);
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(31, 26, 20, 0.06);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.library-card:hover {
+  box-shadow: 0 4px 20px rgba(31, 26, 20, 0.12);
+  transform: translateY(-1px);
+}
+
+/* Multiple-choice button. */
+.choice-btn {
+  background: #fffbf3;
+  border: 2px solid var(--color-vellum-dark);
+  border-radius: 6px;
+  padding: 10px 14px;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+  color: var(--color-ink);
+}
+
+.choice-btn:hover:not(:disabled) {
+  border-color: var(--color-rubric);
+  background: #fff7eb;
+  transform: translateX(2px);
+}
+
+.choice-btn.correct {
+  border-color: var(--color-correct);
+  background: var(--color-correct-light);
+}
+
+.choice-btn.wrong {
+  border-color: var(--color-wrong);
+  background: var(--color-wrong-light);
+}
+
+.choice-btn:disabled { cursor: default; }
+
+.progress-ring-circle {
+  transition: stroke-dashoffset 0.8s ease;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+.streak-flame {
+  display: inline-block;
+  font-size: 1.4rem;
+  animation: pulse-ring 2s ease-in-out infinite;
+}
+
+.loading-passage {
+  background: #fffbf3;
+  border: 1px solid var(--color-vellum-dark);
+  border-radius: 2px;
+  padding: 1.75rem 2rem;
+  min-height: 12rem;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-rubric); border-radius: 3px; }
