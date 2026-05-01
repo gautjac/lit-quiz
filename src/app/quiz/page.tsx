@@ -274,9 +274,11 @@ export default function QuizPage() {
               </div>
               {phase === "reveal" && (
                 <div className="mt-4 text-center max-w-2xl mx-auto">
-                  <p className="text-sm text-ink-muted italic">
-                    from <span className="text-ink">{question.passage.bookTitle ?? "—"}</span>
-                  </p>
+                  {question.passage.bookTitle && (
+                    <p className="text-sm text-ink-muted italic">
+                      from <span className="text-ink">{question.passage.bookTitle}</span>
+                    </p>
+                  )}
                   <a
                     href={question.passage.gutenbergUrl}
                     target="_blank"
