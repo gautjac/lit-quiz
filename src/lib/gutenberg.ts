@@ -114,12 +114,40 @@ function cleanBlock(block: string): string {
 
   const avgLineLen = lines.reduce((s, l) => s + l.length, 0) / lines.length;
   // Poetry-ish: short lines, more than one line.
+  let combined: string;
   if (avgLineLen < 55 && lines.length >= 2 && lines.length <= 16) {
-    return lines.join("\n");
+    combined = lines.join("\n");
+  } else {
+    // Prose: collapse into one paragraph, normalize whitespace.
+    combined = lines.join(" ").replace(/\s+/g, " ").trim();
   }
 
-  // Prose: collapse into one paragraph, normalize whitespace.
-  return lines.join(" ").replace(/\s+/g, " ").trim();
+  return polishGutenbergText(combined);
+}
+
+/**
+ * Convert raw Gutenberg conventions into rendered-friendly text:
+ *  - Strip footnote markers: "Curtis[559]" -> "Curtis"
+ *  - Convert _italics_ markup to a typographic italic span via Unicode-style
+ *    quote pair (we render markdown-ish underscores as nothing — the visual
+ *    convention reads better without them than with literal underscores).
+ *  - Tidy stray Gutenberg punctuation and double-spaces.
+ */
+function polishGutenbergText(text: string): string {
+  return text
+    // Strip numeric footnote markers like [559], [1], [12].
+    .replace(/\[(?:\d+|[ivxlcdm]+)\]/gi, "")
+    // Strip illustration / editorial inserts like [Illustration: ...].
+    .replace(/\[(Illustration|Footnote|Sidenote)[^\]]*\]/gi, "")
+    // Drop the surrounding underscores Gutenberg uses for italics. We could
+    // render true italics, but for a one-paragraph passage, removing the
+    // markers is far more readable than mid-quiz typography.
+    .replace(/_([^_\n]+?)_/g, "$1")
+    // Collapse any double spaces that result from the strips above.
+    .replace(/[ \t]+/g, " ")
+    .replace(/ +\n/g, "\n")
+    .replace(/\n +/g, "\n")
+    .trim();
 }
 
 function isPassageWorthy(
